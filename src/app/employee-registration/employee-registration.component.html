@@ -1,0 +1,15 @@
+<div class="card bg-light mx-auto container" >
+    <article class="card-body"  >
+        <div class="row">
+            <div class="col col-xs-12 col-sm-6">
+                <h2 class="text-center ">Employee Registration</h2>
+                <app-dynamic-form-component [controls]="fields"
+                    (onSubmit)='submit($event)' class="center"></app-dynamic-form-component>
+            </div> 
+            
+            <!-- <div class="hidden-xs col-sm-6 col-md-6 col-lg-6">
+                <img  class="text-center" src="https://ssl.gstatic.com/accounts/signup/glif/account.svg" alt="">
+            </div> -->
+        </div>   
+    </article>
+</div>

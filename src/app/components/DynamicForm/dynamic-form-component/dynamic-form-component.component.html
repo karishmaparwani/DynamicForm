@@ -1,0 +1,64 @@
+<form [formGroup]="form" (ngSubmit)="submit()" novalidate class="form-horizontal">
+  <ng-container *ngFor="let field of formFields">
+    <div [ngSwitch]="field.type" class="form-group">
+
+      <div *ngSwitchCase="'text'">
+        <mat-label>{{field.label}}</mat-label>
+        <input [type]="field.type" [formControlName]="field.label" class="form-control" />
+        <!-- <ng-container *ngFor="let validation of field.validations">
+                    <mat-error
+                        *ngIf="form.field[field.label].touched && form.field[field.label].errors">
+                        <p *ngIf="form.field[field.label].errors[validation.name]">
+                            {{validation.message}}
+                        </p>
+                    </mat-error>
+                </ng-container> -->
+        <br>
+      </div>
+
+      <div *ngSwitchCase="'select'" >
+        <mat-label>{{field.label}}</mat-label>
+        <select formControlName="{{field.label}}"  class="form-control">
+          <option *ngFor="let opt of field.options" [value]="opt">
+            {{opt}}
+          </option>
+        </select>
+      </div>
+
+      <div *ngSwitchCase="'radio'">
+
+        <label class="radio-inline">{{field.label}}</label>
+        <div *ngFor="let option of field.options" class="radio">
+          <input formControlName="{{field.label}}" type="radio" [value]="option"  >
+          <label>{{option}}
+            <span></span>
+          </label>&nbsp;
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf='field.children'>
+      <ng-container *ngFor="let childfield of field.children">
+        <div [ngSwitch]="childfield.type" class="form-group">
+
+          <div *ngSwitchCase="'text'">
+            <mat-label>{{childfield.label}}</mat-label>
+            <input matInput [type]="childfield.type" [formControlName]="childfield.label" class="form-control" />
+            <br>
+          </div>
+
+          <div *ngSwitchCase="'select'">
+            <mat-label>{{childfield.label}}</mat-label>
+            <select formControlName="{{childfield.label}}" class="form-control">
+              <option *ngFor="let opt of childfield.options" [value]="opt">
+                {{opt}}
+              </option>
+            </select>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </ng-container>
+  <br>
+  <input class="btn btn-primary" type="submit" [disabled]="!form.valid" />
+</form>
