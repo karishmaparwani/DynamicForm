@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
-// import form_template from '../shared/form_template'
+import { FormGroup } from '@angular/forms';
 import { DataService } from '../services/data.service';
 @Component({
   selector: 'app-employee-registration',
@@ -47,33 +46,8 @@ export class EmployeeRegistrationComponent implements OnInit {
 
     }
     console.log(resultData)
-    this.fields = [];
+    
     
   }
 
 }
-
-//component with input
-//submit output event emmitter
-//subject behaviour/service
-
-
-
-
-
-
-// if(res.children){
-//   const childrenControl ={}
-//   res.children?.forEach(val => {
-//     childrenControl[val.label] = new FormControl('');
- 
-//   });
-
-//   new FormArray([
-//     new FormGroup (
-//       childrenControl
-//     )
-//   ]);
-
-
-// }
