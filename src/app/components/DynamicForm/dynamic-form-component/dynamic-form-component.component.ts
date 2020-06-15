@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { Validators, FormControl, FormGroup } from '@angular/forms';
 
 @Component({
@@ -6,50 +6,67 @@ import { Validators, FormControl, FormGroup } from '@angular/forms';
   templateUrl: './dynamic-form-component.component.html',
   styleUrls: ['./dynamic-form-component.component.css']
 })
-export class DynamicFormComponentComponent implements OnInit {
-
-  form :FormGroup;
-  @Input('controls') formFields;
+export class DynamicFormComponentComponent implements OnInit, OnChanges {
+  dynamicForm;
+  @Input('controls') formFields = [];
   @Output('onSubmit') onSubmit = new EventEmitter();
+  nestedFormGroupName:'';
 
-  constructor() { 
-
+  constructor() {
   }
-  ngOnInit(): void {
- 
+
+  
+  ngOnChanges(changes: import("@angular/core").SimpleChanges): void {
     const controls = {};
-     setTimeout(() => {
-      this.formFields.forEach(res => {
-  
-        const validationsArray = [];
-        res.validations?.forEach(val => {
-          if (val.name === 'required') {
-            validationsArray.push(
-              Validators.required
+    const childControl = {};
+
+      if (changes.formFields.currentValue) {
+        this.formFields.forEach(res => {
+
+          const validationsArray = [];
+          res.validations?.forEach(val => {
+            if (val.name === 'required') {
+              validationsArray.push(
+                Validators.required
+              );
+            }
+            if (val.name === 'pattern') {
+              validationsArray.push(
+                Validators.pattern(val.validator)
+              );
+            }
+          });
+          controls[res.field] = new FormControl('', validationsArray);
+          var nestedProp;
+          res.children?.forEach(val => {
+            nestedProp = val.field.split('.');
+            childControl[nestedProp[1]] = new FormControl('')
+            this.nestedFormGroupName= nestedProp[0];
+            controls[nestedProp[0]] = new FormGroup(
+              childControl
             );
-          }
-          if (val.name === 'pattern') {
-            validationsArray.push(
-              Validators.pattern(val.validator)
-            );
-          }
+
+          });
         });
-        controls[res.label] = new FormControl('', validationsArray);
-        res.children?.forEach(val => {
-              controls[val.label] = new FormControl('',validationsArray);
-           
-            });
-      }); 
-  
-    this.form = new FormGroup(
-      controls
-    );
-     }, 0);
-    
+
+
+        this.dynamicForm = new FormGroup(
+          controls
+        );
+      } else {
+        this.formFields = [];
+      }
+      
   }
 
-  submit(){
-    this.onSubmit.emit(this.form.value);
+
+  ngOnInit(): void {
+  }
+
+  submit() {
+    if(!this.dynamicForm.invalid){
+    this.onSubmit.emit(this.dynamicForm.value);
+    this.dynamicForm.reset();}
   }
 
 }

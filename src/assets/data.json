@@ -3,6 +3,18 @@
         "type": "text",
         "label": "Username",
         "field": "username",
+        "children": [
+          {
+            "type": "text",
+            "label": "Skill",
+            "field": "user.skill"
+          },
+          {
+            "type": "text",
+            "label": "Designation",
+            "field": "user.designation"
+          }
+        ],
         "validations": [
           {
             "name": "required",
@@ -14,40 +26,17 @@
             "validator": "^[a-zA-Z]+$",
             "message": "Accept only text"
           }
-        ],
-        "children": [
-          {
-          "type": "text",
-          "label": "Full Name",
-          "field": "name"
-        },
-          {
-            "type": "text",
-            "label": "Skill",
-            "field": "Skill"
-          },
-          {
-            "type": "text",
-            "label": "Designation",
-            "field": "name"
-          }
         ]
       },
       {
         "type": "text",
         "label": "City",
-        "field": "name",
-        "validations": [
-          {
-            "name": "required",
-            "validator": "required",
-            "message": "Password Required"
-          }
-        ]
+        "field": "city"
       },
       {
         "type": "select",
         "label": "Years of Experience",
+        "field": "years of experience",
         "options": [
           "1",
           "2",
@@ -59,9 +48,11 @@
       {
         "type": "radio",
         "label": "Gender",
+        "field":"gender",
         "options": [
           "Male",
           "Female"
         ]
       }
     ]
+

@@ -12,6 +12,7 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { EmployeeRegistrationComponent } from './employee-registration/employee-registration.component';
 import { DynamicFormComponentComponent } from './components/DynamicForm/dynamic-form-component/dynamic-form-component.component';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { DynamicFormComponentComponent } from './components/DynamicForm/dynamic-
     MatSelectModule,
     MatInputModule,
     MatCardModule,
-    HttpClientModule
+    HttpClientModule,
+    ToastrModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]
