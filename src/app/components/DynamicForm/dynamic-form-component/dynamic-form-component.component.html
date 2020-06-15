@@ -31,17 +31,16 @@
     <div *ngIf='field.children'>
       <ng-container *ngFor="let childfield of field.children" formGroupName='{{nestedFormGroupName}}'>
         <div [ngSwitch]="childfield.type" class="form-group">
-
           <div *ngSwitchCase="'text'">
             <mat-label>{{childfield.label}}</mat-label>
-            <input matInput [type]="childfield.type" formControlName="{{childfield.field | slice:5}}"
+            <input matInput [type]="childfield.type" formControlName="{{childfield.field | sliceData}}"
               class="form-control" />
             <br>
           </div>
 
           <div *ngSwitchCase="'select'">
             <mat-label>{{childfield.label}}</mat-label>
-            <select formControlName="{{childfield.field | slice:5}}" class="form-control">
+            <select formControlName="{{childfield.field | sliceData}}" class="form-control">
               <option *ngFor="let opt of childfield.options" [value]="opt">
                 {{opt}}
               </option>
@@ -52,7 +51,7 @@
 
             <label>{{childfield.label}}</label>
             <div *ngFor="let option of childfield.options" class="radio">
-              <input formControlName="{{childfield.field | slice:5}}" type="radio" [value]="option">
+              <input formControlName="{{childfield.field | sliceData}}" type="radio" [value]="option">
               <label>{{option}}
                 <span></span>
               </label>&nbsp;

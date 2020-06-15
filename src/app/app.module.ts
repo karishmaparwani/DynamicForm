@@ -13,12 +13,14 @@ import { HttpClientModule } from '@angular/common/http';
 import { EmployeeRegistrationComponent } from './employee-registration/employee-registration.component';
 import { DynamicFormComponentComponent } from './components/DynamicForm/dynamic-form-component/dynamic-form-component.component';
 import { ToastrModule } from 'ngx-toastr';
+import { SliceDataPipe } from './shared/sliceData.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     EmployeeRegistrationComponent,
     DynamicFormComponentComponent,
+    SliceDataPipe
   ],
   imports: [
     BrowserModule,
