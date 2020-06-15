@@ -1,5 +1,5 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
-import { Validators, FormControl, FormGroup } from '@angular/forms';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-dynamic-form-component',
@@ -8,55 +8,54 @@ import { Validators, FormControl, FormGroup } from '@angular/forms';
 })
 export class DynamicFormComponentComponent implements OnInit, OnChanges {
   dynamicForm;
-  @Input('controls') formFields = [];
-  @Output('onSubmit') onSubmit = new EventEmitter();
-  nestedFormGroupName:'';
+  @Input('controlsFormField') formFields = [];
+  @Output('onSubmit') submitClick = new EventEmitter();
+  nestedFormGroupName: '';
 
   constructor() {
   }
 
-  
-  ngOnChanges(changes: import("@angular/core").SimpleChanges): void {
+  ngOnChanges(changes: import('@angular/core').SimpleChanges): void {
     const controls = {};
     const childControl = {};
 
-      if (changes.formFields.currentValue) {
-        this.formFields.forEach(res => {
+    if (changes.formFields.currentValue) {
+      this.formFields.forEach(res => {
 
-          const validationsArray = [];
-          res.validations?.forEach(val => {
-            if (val.name === 'required') {
-              validationsArray.push(
-                Validators.required
-              );
-            }
-            if (val.name === 'pattern') {
-              validationsArray.push(
-                Validators.pattern(val.validator)
-              );
-            }
-          });
-          controls[res.field] = new FormControl('', validationsArray);
-          var nestedProp;
-          res.children?.forEach(val => {
-            nestedProp = val.field.split('.');
-            childControl[nestedProp[1]] = new FormControl('')
-            this.nestedFormGroupName= nestedProp[0];
-            controls[nestedProp[0]] = new FormGroup(
-              childControl
+        const validationsArray = [];
+        res.validations?.forEach(val => {
+          if (val.name === 'required') {
+            validationsArray.push(
+              Validators.required
             );
-
-          });
+          }
+          if (val.name === 'pattern') {
+            validationsArray.push(
+              Validators.pattern(val.validator)
+            );
+          }
         });
+        controls[res.field] = new FormControl('', validationsArray);
+        let nestedProp;
+        res.children?.forEach(val => {
+          nestedProp = val.field.split('.');
+          childControl[nestedProp[1]] = new FormControl('', validationsArray);
+          this.nestedFormGroupName = nestedProp[0];
+          controls[nestedProp[0]] = new FormGroup(
+            childControl
+          );
+
+        });
+      });
 
 
-        this.dynamicForm = new FormGroup(
-          controls
-        );
-      } else {
-        this.formFields = [];
-      }
-      
+      this.dynamicForm = new FormGroup(
+        controls
+      );
+    } else {
+      this.formFields = [];
+    }
+
   }
 
 
@@ -64,9 +63,10 @@ export class DynamicFormComponentComponent implements OnInit, OnChanges {
   }
 
   submit() {
-    if(!this.dynamicForm.invalid){
-    this.onSubmit.emit(this.dynamicForm.value);
-    this.dynamicForm.reset();}
+    if (!this.dynamicForm.invalid) {
+      this.submitClick.emit(this.dynamicForm.value);
+      this.dynamicForm.reset();
+    }
   }
 
 }

@@ -5,6 +5,7 @@
       <div *ngSwitchCase="'text'">
         <mat-label>{{field.label}}</mat-label>
         <input [type]="field.type" formControlName="{{field.field}}" class="form-control" />
+        <ng-container *ngTemplateOutlet="validationTmpl; context: { $implicit: field }"></ng-container>
         <br>
       </div>
 
@@ -15,6 +16,7 @@
             {{opt}}
           </option>
         </select>
+        <ng-container *ngTemplateOutlet="validationTmpl; context: { $implicit: field }"></ng-container>
       </div>
 
       <div *ngSwitchCase="'radio'" class="radio">
@@ -25,6 +27,7 @@
           <label>{{option}}
           </label>
         </div>
+        <ng-container *ngTemplateOutlet="validationTmpl; context: { $implicit: field }"></ng-container>
       </div>
     </div>
 
@@ -33,9 +36,8 @@
         <div [ngSwitch]="childfield.type" class="form-group">
           <div *ngSwitchCase="'text'">
             <mat-label>{{childfield.label}}</mat-label>
-            <input matInput [type]="childfield.type" formControlName="{{childfield.field | sliceData}}"
+            <input matInput [type]="childfield.type" formControlName="{{childfield.field | sliceData }}"
               class="form-control" />
-            <br>
           </div>
 
           <div *ngSwitchCase="'select'">
@@ -45,6 +47,7 @@
                 {{opt}}
               </option>
             </select>
+
           </div>
 
           <div *ngSwitchCase="'radio'" class="radio">
@@ -64,5 +67,17 @@
     </div>
   </ng-container>
   <br>
-  <button class="btn btn-primary" type="submit">Submit</button>
+  <button class="btn btn-primary" type="submit" [disabled]="!dynamicForm.valid">Submit</button>
 </form>
+
+
+<ng-template #validationTmpl let-field>
+  <ng-container *ngFor="let validation of field.validations">
+    <span *ngIf="dynamicForm.controls[field.field].touched && dynamicForm.controls[field.field].errors"
+      class="alert-danger">
+      <p *ngIf="dynamicForm.controls[field.field].errors[validation.name]">
+        {{validation.message }}
+      </p>
+    </span>
+  </ng-container>
+</ng-template>

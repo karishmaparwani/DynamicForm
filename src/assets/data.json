@@ -31,7 +31,19 @@
       {
         "type": "text",
         "label": "City",
-        "field": "city"
+        "field": "city",
+        "validations": [
+          {
+            "name": "required",
+            "validator": "required",
+            "message": "City Required"
+          },
+          {
+            "name": "pattern",
+            "validator": "^[a-zA-Z]+$",
+            "message": "Accept only text"
+          }
+        ]
       },
       {
         "type": "select",
@@ -43,6 +55,13 @@
           "3",
           "4",
           "5"
+        ],
+        "validations": [
+          {
+            "name": "required",
+            "validator": "required",
+            "message": "Years of experience required"
+          }
         ]
       },
       {
@@ -52,6 +71,13 @@
         "options": [
           "Male",
           "Female"
+        ],
+        "validations": [
+          {
+            "name": "required",
+            "validator": "required",
+            "message": "Gender Required"
+          }
         ]
       }
     ]

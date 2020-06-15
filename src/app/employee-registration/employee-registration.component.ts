@@ -9,27 +9,27 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./employee-registration.component.css']
 })
 export class EmployeeRegistrationComponent implements OnInit  {
-  
+
 
   employeeRegistrationForm: FormGroup;
   fields: any ;
 
-  constructor(private _dataService :DataService,
-    private _toasterService: ToastrService) { 
+  constructor(private dataservice: DataService,
+              private toasterservice: ToastrService) {
   }
 
   ngOnInit(): void {
-     this._dataService.getFormTemplate().subscribe((data)=>{
-      this.fields = data
-    })
+     this.dataservice.getFormTemplate().subscribe((data) => {
+      this.fields = data;
+    });
 
   }
 
 
-  submit(event){
-    console.log(event)
-    this._toasterService.success("Registration succesfully done");
-    
+  submit(event) {
+    console.log(event);
+    this.toasterservice.success('Registration succesfully done');
+
   }
 
 }
